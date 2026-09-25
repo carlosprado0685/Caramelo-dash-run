@@ -1,0 +1,161 @@
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  carregarPreferenciaSom,
+  definirSom,
+  iniciarMusica,
+  pararMusica,
+  tocarImpacto,
+  tocarLatido,
+} from "../../game/audio";
+import { resetRuntime, runtime, vibrar } from "../../game/runtime";
+import { gameStore, useGameStore } from "../../game/store";
+import { useSwipeControls } from "../../game/useSwipeControls";
+import { Dog } from "./Dog";
+import { DogShadow } from "./DogShadow";
+import { Dust } from "./Dust";
+import { HUD } from "./HUD";
+import { Road } from "./Road";
+import { World } from "./World";
+
+function CameraRig() {
+  const { camera } = useThree();
+  const t = useRef(0);
+  useEffect(() => {
+    camera.position.set(0, 4.3, 9);
+    camera.lookAt(0, 1.2, -6);
+  }, [camera]);
+
+  useFrame((_, rawDelta) => {
+    const dt = Math.min(rawDelta, 0.05);
+    t.current += dt;
+
+    // Balanço muito leve, proporcional à velocidade (só enquanto corre)
+    const intensity = runtime.alive ? Math.min(1, runtime.speed / 24) : 0;
+    const bobY = Math.sin(t.current * 7.5) * 0.022 * intensity;
+    const bobX = Math.sin(t.current * 3.7) * 0.026 * intensity;
+    const roll = Math.sin(t.current * 3.1) * 0.004 * intensity;
+
+    // Tremor do impacto: forte por um instante e decai rápido
+    if (runtime.shake > 0) {
+      runtime.shake = Math.max(0, runtime.shake - dt * 2.6);
+    }
+    const s = runtime.shake * runtime.shake;
+    const kickX = (Math.random() - 0.5) * 0.5 * s;
+    const kickY = (Math.random() - 0.5) * 0.4 * s;
+
+    const targetX = runtime.playerX * 0.55 + bobX;
+    camera.position.x += (targetX - camera.position.x) * Math.min(1, 6 * dt);
+    camera.position.y += (4.3 + bobY - camera.position.y) * Math.min(1, 8 * dt);
+    camera.position.x += kickX;
+    camera.position.y += kickY;
+    camera.lookAt(runtime.playerX * 0.4, 1.2, -6);
+    camera.rotation.z += roll + (Math.random() - 0.5) * 0.05 * s;
+  });
+  return null;
+}
+
+
+/** Sincroniza a pontuação com a interface algumas vezes por segundo. */
+function ScoreSync() {
+  const acc = useRef(0);
+  useFrame((_, delta) => {
+    acc.current += delta;
+    if (acc.current < 0.12) return;
+    acc.current = 0;
+    if (gameStore.get().score !== runtime.score) {
+      gameStore.set({ score: runtime.score });
+    }
+  });
+  return null;
+}
+
+export function GameCanvas() {
+  const { phase } = useGameStore();
+  const [runId, setRunId] = useState(0);
+  useSwipeControls(phase === "jogando");
+
+  useEffect(() => {
+    gameStore.loadBest();
+    gameStore.set({ som: carregarPreferenciaSom() });
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        pararMusica();
+      } else if (gameStore.get().phase === "jogando" && gameStore.get().som) {
+        iniciarMusica();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      pararMusica();
+    };
+  }, []);
+
+  const alternarSom = useCallback(() => {
+    const novo = !gameStore.get().som;
+    definirSom(novo);
+    gameStore.set({ som: novo });
+  }, []);
+
+  const iniciar = useCallback(() => {
+    resetRuntime();
+    setRunId((n) => n + 1);
+    gameStore.set({ phase: "jogando", score: 0, coins: 0, treats: 0 });
+    tocarLatido();
+    iniciarMusica();
+  }, []);
+
+  const perder = useCallback(() => {
+    if (!runtime.alive) return;
+    runtime.alive = false;
+    // Reação ao impacto: tremor de câmera + tombo do cachorro + vibração
+    runtime.shake = 1;
+    runtime.hitTimer = 0;
+    runtime.wagTimer = 0;
+    vibrar([0, 70, 45, 120]);
+    tocarImpacto();
+    gameStore.saveBest(runtime.score);
+    // pequeno atraso para o jogador ver o tombo antes da tela de fim
+    window.setTimeout(() => {
+      gameStore.set({
+        phase: "fim",
+        score: runtime.score,
+        coins: runtime.coins,
+        treats: runtime.treats,
+      });
+    }, 550);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 select-none overflow-hidden bg-sky touch-none">
+      <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 4.3, 9], fov: 58 }}>
+        <color attach="background" args={["#8fd3f0"]} />
+        <fog attach="fog" args={["#a9dff5", 45, 105]} />
+        <ambientLight intensity={0.75} />
+        <hemisphereLight args={["#cbeafd", "#8b7554", 0.6]} />
+        <directionalLight
+          position={[6, 12, 6]}
+          intensity={1.7}
+          castShadow
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
+          shadow-camera-left={-12}
+          shadow-camera-right={12}
+          shadow-camera-top={12}
+          shadow-camera-bottom={-12}
+        />
+
+        <CameraRig />
+        <ScoreSync />
+        <Road />
+        <DogShadow />
+        <Dog />
+        {phase === "jogando" && <Dust />}
+        {phase !== "inicio" && <World key={runId} onHit={perder} />}
+      </Canvas>
+
+      <HUD onJogar={iniciar} onAlternarSom={alternarSom} />
+    </div>
+  );
+}
