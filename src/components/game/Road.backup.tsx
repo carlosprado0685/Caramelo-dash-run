@@ -110,25 +110,48 @@ function Padaria() {
 }
 
 /** Árvore de praça. */
+/** Árvore de praça. */
 function Arvore() {
   return (
     <group>
-      <mesh position={[0, 0.9, 0]} castShadow>
-        <cylinderGeometry args={[0.14, 0.2, 1.8, 8]} />
-        <meshStandardMaterial color="#7a5638" roughness={0.9} />
+      {/* tronco */}
+      <mesh position={[0, 1.05, 0]} castShadow>
+        <cylinderGeometry args={[0.16, 0.25, 2.1, 8]} />
+        <meshStandardMaterial color="#705039" roughness={0.95} />
       </mesh>
-      <mesh position={[0, 2.1, 0]} castShadow>
-        <sphereGeometry args={[1.05, 14, 12]} />
-        <meshStandardMaterial color="#3f8046" roughness={0.9} />
+
+      {/* copa principal */}
+      <mesh position={[0, 2.5, 0]} scale={[1.35, 1.55, 1.05]} castShadow>
+        <sphereGeometry args={[1, 14, 12]} />
+        <meshStandardMaterial color="#ff0000" roughness={0.95} />
       </mesh>
-      <mesh position={[0.55, 1.7, 0.3]} castShadow>
-        <sphereGeometry args={[0.6, 12, 10]} />
-        <meshStandardMaterial color="#4c9354" roughness={0.9} />
+
+      {/* volume frontal */}
+      <mesh position={[0, 2.05, 0.7]} scale={[1.0, 0.65, 0.8]} castShadow>
+        <sphereGeometry args={[1, 12, 10]} />
+        <meshStandardMaterial color="#428c49" roughness={0.95} />
+      </mesh>
+
+      {/* volume lateral esquerdo */}
+      <mesh position={[-0.72, 2.35, 0.05]} scale={[0.82, 0.9, 0.78]} castShadow>
+        <sphereGeometry args={[1, 12, 10]} />
+        <meshStandardMaterial color="#4a9650" roughness={0.95} />
+      </mesh>
+
+      {/* volume lateral direito */}
+      <mesh position={[0.68, 2.25, -0.05]} scale={[0.72, 0.82, 0.85]} castShadow>
+        <sphereGeometry args={[1, 12, 10]} />
+        <meshStandardMaterial color="#3f8746" roughness={0.95} />
+      </mesh>
+
+      {/* topo irregular */}
+      <mesh position={[-0.35, 3.35, -0.08]} scale={[0.75, 0.9, 0.65]} castShadow>
+        <sphereGeometry args={[1, 10, 8]} />
+        <meshStandardMaterial color="#458f4b" roughness={0.95} />
       </mesh>
     </group>
   );
 }
-
 /** Muro com grafites discretos. */
 function MuroGrafitado({ lado }: { lado: number }) {
   return (
@@ -238,10 +261,7 @@ export function Road() {
                   emissiveIntensity={0.6}
                 />
               </mesh>
-              <mesh position={[side * 0.9, 0.32, 2]} castShadow>
-                <sphereGeometry args={[0.45, 12, 10]} />
-                <meshStandardMaterial color="#4f8b52" roughness={0.9} />
-              </mesh>
+
             </group>
           );
         })}
@@ -249,7 +269,7 @@ export function Road() {
 
       {/* ambientação de bairro (decorativa, sem colisão) */}
       <group ref={cenario}>
-        {Array.from({ length: 4 }).map((_, i) => {
+        {Array.from({ length: 8 }).map((_, i) => {
           const z = -i * 24 - 6;
           const lado = i % 2 === 0 ? -1 : 1;
           return (
@@ -257,10 +277,10 @@ export function Road() {
               <group position={[0, 0, -4]}>
                 <FaixaDePedestres />
               </group>
-              <group position={[lado * 5.6, 0.28, 0]}>
+              <group position={[lado * 8.5, 0.28, -3]}>
                 {i % 2 === 0 ? <BancaDeJornal /> : <Arvore />}
               </group>
-              <group position={[-lado * 5.9, 0.28, -6]}>
+              <group position={[-lado * 8.5, 0.28, -9]}>
                 {i % 2 === 0 ? <Arvore /> : <Arvore />}
               </group>
               <group position={[lado * 7.4, 0.28, -12]}>

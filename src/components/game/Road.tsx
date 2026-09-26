@@ -108,27 +108,106 @@ function Padaria() {
     </group>
   );
 }
-
-/** Árvore de praça. */
-function Arvore() {
+function Casa({ cor = "#e8d2b5" }: { cor?: string }) {
   return (
     <group>
-      <mesh position={[0, 0.9, 0]}>
-        <cylinderGeometry args={[0.14, 0.2, 1.8, 8]} />
-        <meshStandardMaterial color="#7a5638" roughness={0.9} />
+      <mesh position={[0, 2.1, 0]} castShadow>
+        <boxGeometry args={[4.5, 4.2, 3]} />
+        <meshStandardMaterial color={cor} roughness={0.9} />
       </mesh>
-      <mesh position={[0, 2.1, 0]}>
-        <sphereGeometry args={[1.05, 14, 12]} />
-        <meshStandardMaterial color="#3f8046" roughness={0.9} />
+
+      {/* telhado */}
+      <mesh position={[0, 4.35, 0]}>
+        <boxGeometry args={[4.9, 0.22, 3.3]} />
+        <meshStandardMaterial color="#9a4a36" roughness={0.85} />
       </mesh>
-      <mesh position={[0.55, 1.7, 0.3]}>
-        <sphereGeometry args={[0.6, 12, 10]} />
-        <meshStandardMaterial color="#4c9354" roughness={0.9} />
+
+      {/* porta */}
+      <mesh position={[0, 0.8, 1.52]}>
+        <boxGeometry args={[0.75, 1.6, 0.08]} />
+        <meshStandardMaterial color="#5a3d2c" roughness={0.8} />
+      </mesh>
+
+      {/* janelas */}
+      {[-1.2, 1.2].map((x) => (
+        <group key={x}>
+          <mesh position={[x, 2.9, 1.52]}>
+            <boxGeometry args={[0.85, 0.85, 0.06]} />
+            <meshStandardMaterial color="#9fd4e4" roughness={0.25} metalness={0.15} />
+          </mesh>
+          <mesh position={[x, 1.7, 1.52]}>
+            <boxGeometry args={[0.85, 0.85, 0.06]} />
+            <meshStandardMaterial color="#9fd4e4" roughness={0.25} metalness={0.15} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* varanda */}
+      <mesh position={[0, 2.25, 1.65]}>
+        <boxGeometry args={[2.4, 0.08, 0.5]} />
+        <meshStandardMaterial color="#d8d8d8" roughness={0.8} />
+      </mesh>
+
+      {/* toldo */}
+      <mesh position={[0, 2.55, 1.95]} rotation-x={-0.28}>
+        <boxGeometry args={[2.6, 0.08, 0.9]} />
+        <meshStandardMaterial color="#d35b42" roughness={0.85} />
       </mesh>
     </group>
   );
 }
+/** Árvore de praça. */
+function Arvore() {
+  return (
+    <group>
+      {/* tronco */}
+      <mesh position={[0, 1.05, 0]} castShadow>
+        <cylinderGeometry args={[0.16, 0.25, 2.1, 8]} />
+        <meshStandardMaterial color="#765238" roughness={0.9} />
+      </mesh>
 
+      {/* galho esquerdo */}
+      <mesh position={[-0.28, 1.82, 0]} rotation-z={-0.45} castShadow>
+        <cylinderGeometry args={[0.07, 0.1, 0.9, 7]} />
+        <meshStandardMaterial color="#765238" roughness={0.9} />
+      </mesh>
+
+      {/* galho direito */}
+      <mesh position={[0.28, 1.86, 0.04]} rotation-z={0.45} castShadow>
+        <cylinderGeometry args={[0.07, 0.1, 0.9, 7]} />
+        <meshStandardMaterial color="#765238" roughness={0.9} />
+      </mesh>
+
+      {/* copa única */}
+      <mesh
+        position={[0, 2.65, 0]}
+        scale={[1.45, 1.3, 1.15]}
+        castShadow
+      >
+        <icosahedronGeometry args={[1, 2]} />
+        <meshStandardMaterial
+          color="#397f42"
+          roughness={0.95}
+          flatShading={false}
+        />
+      </mesh>
+
+      {/* pequena irregularidade inferior */}
+      <mesh
+        position={[0.55, 2.25, 0.35]}
+        scale={[0.65, 0.55, 0.6]}
+        castShadow
+      >
+        <icosahedronGeometry args={[1, 1]} />
+        <meshStandardMaterial
+          color="#438b49"
+          roughness={0.95}
+          flatShading={false}
+        />
+      </mesh>
+    </group>
+  );
+}
 /** Muro com grafites discretos. */
 function MuroGrafitado({ lado }: { lado: number }) {
   return (
@@ -238,10 +317,16 @@ export function Road() {
                   emissiveIntensity={0.6}
                 />
               </mesh>
-              <mesh position={[side * 0.9, 0.32, 2]}>
-                <sphereGeometry args={[0.45, 12, 10]} />
-                <meshStandardMaterial color="#4f8b52" roughness={0.9} />
-              </mesh>
+              {i % 3 === 0 ? (
+  <group position={[side * 0.95, 0, 2]}>
+    <Arvore />
+  </group>
+) : (
+  <mesh position={[side * 0.9, 0.32, 2]}>
+    <sphereGeometry args={[0.45, 12, 10]} />
+    <meshStandardMaterial color="#4f8b52" roughness={0.9} />
+  </mesh>
+)}
             </group>
           );
         })}

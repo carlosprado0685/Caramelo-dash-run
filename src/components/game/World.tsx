@@ -135,13 +135,23 @@ function buildChunk(
   if (Math.random() < 0.85) {
     const isTreat = Math.random() < 0.18;
     const count = isTreat ? 1 : 3;
+
+    // Se houver um buraco neste chunk, afastamos os coletáveis
+    // para não parecer que a moeda está sobre o buraco.
+    const hasHole = out.some(
+      (entity) =>
+        entity.type === "obstaculo" && entity.kind === "buraco",
+    );
+
+    const itemStartZ = baseZ + (hasHole ? 5 : 0);
+
     for (let i = 0; i < count; i++) {
       out.push({
         id: nextId++,
         type: "item",
         kind: isTreat ? "petisco" : "moeda",
         lane: safeLane,
-        z: baseZ + i * 1.7,
+        z: itemStartZ + i * 1.7,
       });
     }
   }
