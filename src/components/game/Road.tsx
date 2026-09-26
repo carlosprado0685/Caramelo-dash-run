@@ -249,34 +249,45 @@ export function Road() {
 
       {/* ambientação de bairro (decorativa, sem colisão) */}
       <group ref={cenario}>
-        {Array.from({ length: 2 }).map((_, i) => {
-          const z = -i * 24 - 6;
-          const lado = i % 2 === 0 ? -1 : 1;
-          return (
-            <group key={i} position={[0, 0, z]}>
-              <group position={[0, 0, -4]}>
-                <FaixaDePedestres />
-              </group>
-              <group position={[lado * 5.6, 0.28, 0]}>
-                {i % 2 === 0 ? <BancaDeJornal /> : <Arvore />}
-              </group>
-              <group position={[-lado * 5.9, 0.28, -6]}>
-                {i % 2 === 0 ? <Arvore /> : <BancaDeJornal />}
-              </group>
-              <group position={[lado * 7.4, 0.28, -12]}>
-                <MuroGrafitado lado={lado} />
-              </group>
-              <group position={[-lado * 4.5, 0.28, -9]}>
-                <Placa texto={i % 2 === 0 ? "PARE" : "PADARIA"} cor={i % 2 === 0 ? "#b33a2c" : "#2f6f9e"} />
-              </group>
-              {i % 2 === 1 && (
-                <group position={[lado * 11, 0.28, -16]}>
-                  <Padaria />
-                </group>
-              )}
-            </group>
-          );
-        })}
+        {Array.from({ length: 4 }).map((_, i) => {
+  const z = -i * 24 - 6;
+  const lado = i % 2 === 0 ? -1 : 1;
+
+  return (
+    <group key={i} position={[0, 0, z]}>
+      {i % 2 === 0 && (
+        <group position={[0, 0, -4]}>
+          <FaixaDePedestres />
+        </group>
+      )}
+
+      <group position={[lado * 5.6, 0.28, 0]}>
+        {i % 2 === 0 ? <BancaDeJornal /> : <Arvore />}
+      </group>
+
+      <group position={[-lado * 5.9, 0.28, -6]}>
+        {i % 2 === 0 ? <Arvore /> : <BancaDeJornal />}
+      </group>
+
+      <group position={[lado * 7.4, 0.28, -12]}>
+        <MuroGrafitado lado={lado} />
+      </group>
+
+      <group position={[-lado * 4.5, 0.28, -9]}>
+        <Placa
+          texto={i % 2 === 0 ? "PARE" : "PADARIA"}
+          cor={i % 2 === 0 ? "#b33a2c" : "#2f6f9e"}
+        />
+      </group>
+
+      {i % 2 === 1 && (
+        <group position={[lado * 11, 0.28, -16]}>
+          <Padaria />
+        </group>
+      )}
+    </group>
+  );
+})}
       </group>
     </group>
   );

@@ -66,7 +66,7 @@ function randomInt(n: number) {
 function pick<T>(list: T[]): T {
   return list[randomInt(list.length)]!;
 }
-const CROSSWALK_BASE_ZS = [-10, -34, -58, -82];
+const CROSSWALK_BASE_ZS = [-10, -58];
 const CROSSWALK_LENGTH = 3.2;
 
 function isCrosswalkNearZ(z: number): boolean {
@@ -102,14 +102,20 @@ function buildChunk(
   // no mÃ¡ximo 2 obstÃ¡culos, e sÃ³ em dificuldade alta
   const blockCount = difficulty > 0.55 && Math.random() < 0.4 ? 2 : 1;
   const blocked = blockCount >= 2 ? others : [pick(others)];
-const obstaclePool = isCrosswalkNearZ(baseZ)
-  ? OBSTACLES_NO_BURACO
-  : OBSTACLES;
+  const obstaclePool = isCrosswalkNearZ(baseZ)
+    ? OBSTACLES_NO_BURACO
+    : OBSTACLES;
+
   for (const lane of blocked) {
+    const lanePool =
+      lane === 1
+        ? OBSTACLES_NO_BURACO
+        : obstaclePool;
+
     out.push({
       id: nextId++,
       type: "obstaculo",
-      kind: pick(obstaclePool),
+      kind: pick(lanePool),
       lane,
       z: baseZ,
     });
