@@ -890,6 +890,33 @@ export function Road() {
   />
 </group>
 
+{/* terreno distante */}
+{[-1, 1].map((s) => (
+  <mesh
+    key={`terreno-distante-${s}`}
+    position={[s * 20, -0.02, -30]}
+    receiveShadow
+  >
+    <boxGeometry args={[19.8, 0.08, 200]} />
+    <meshStandardMaterial
+      color="#7f9b5d"
+      roughness={1}
+    />
+  </mesh>
+))}
+
+{/* faixa de terreno no horizonte */}
+<mesh
+  position={[0, -0.01, -98]}
+  receiveShadow
+>
+  <boxGeometry args={[40, 0.08, 8]} />
+  <meshStandardMaterial
+    color="#748a59"
+    roughness={1}
+  />
+</mesh>
+
             {/* muros baixos laterais */}
       {Array.from({ length: 6 }).map((_, i) => {
         const z = -i * 32 - 12;
