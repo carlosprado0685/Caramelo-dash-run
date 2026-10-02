@@ -749,6 +749,87 @@ export function Road() {
 
   return (
     <group>
+{/* nuvem decorativa */}
+<group position={[-4, 7, -55]}>
+  <mesh position={[-0.8, 0, 0]}>
+    <sphereGeometry args={[1.2, 12, 8]} />
+    <meshStandardMaterial
+      color="#ffffff"
+      roughness={1}
+    />
+  </mesh>
+
+  <mesh position={[0.4, 0.15, 0]}>
+    <sphereGeometry args={[1.5, 12, 8]} />
+    <meshStandardMaterial
+      color="#ffffff"
+      roughness={1}
+    />
+  </mesh>
+
+  <mesh position={[1.5, 0, 0]}>
+    <sphereGeometry args={[1.0, 12, 8]} />
+    <meshStandardMaterial
+      color="#ffffff"
+      roughness={1}
+    />
+  </mesh>
+</group>
+
+{/* segunda nuvem decorativa */}
+<group position={[5, 8, -78]}>
+  <mesh position={[-0.9, 0, 0]}>
+    <sphereGeometry args={[1.0, 12, 8]} />
+    <meshStandardMaterial
+      color="#ffffff"
+      roughness={1}
+    />
+  </mesh>
+
+  <mesh position={[0.3, 0.2, 0]}>
+    <sphereGeometry args={[1.35, 12, 8]} />
+    <meshStandardMaterial
+      color="#ffffff"
+      roughness={1}
+    />
+  </mesh>
+
+  <mesh position={[1.4, 0, 0]}>
+    <sphereGeometry args={[0.85, 12, 8]} />
+    <meshStandardMaterial
+      color="#ffffff"
+      roughness={1}
+    />
+  </mesh>
+</group>
+
+{/* terceira nuvem decorativa */}
+<group position={[7, 8.5, -72]}>
+  <mesh position={[-0.7, 0, 0]}>
+    <sphereGeometry args={[0.75, 12, 8]} />
+    <meshStandardMaterial
+      color="#ffffff"
+      roughness={1}
+    />
+  </mesh>
+
+  <mesh position={[0.2, 0.12, 0]}>
+    <sphereGeometry args={[1.0, 12, 8]} />
+    <meshStandardMaterial
+      color="#ffffff"
+      roughness={1}
+    />
+  </mesh>
+
+  <mesh position={[1.0, 0, 0]}>
+    <sphereGeometry args={[0.65, 12, 8]} />
+    <meshStandardMaterial
+      color="#ffffff"
+      roughness={1}
+    />
+  </mesh>
+</group>
+
       <mesh rotation-x={-Math.PI / 2} position={[0, 0, -30]} receiveShadow>
         <planeGeometry args={[7.4, 200]} />
         <meshStandardMaterial map={asphalt} roughness={0.95} />
