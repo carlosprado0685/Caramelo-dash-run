@@ -971,7 +971,6 @@ export function Road() {
   />
 </group>
 
-{/* terreno distante */}
 {[-1, 1].map((s) => (
   <mesh
     key={`terreno-distante-${s}`}
@@ -990,6 +989,7 @@ export function Road() {
 <mesh
   position={[0, -0.01, -98]}
   receiveShadow
+visible={false}
 >
   <boxGeometry args={[40, 0.08, 8]} />
   <meshStandardMaterial

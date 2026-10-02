@@ -4,30 +4,42 @@ import type { ObstacleKind } from "../../game/constants";
 export function ObstacleModel({ kind }: { kind: ObstacleKind }) {
   switch (kind) {
     case "cone":
-      return (
-        <group>
-          <mesh position={[0, 0.05, 0]} >
-            <boxGeometry args={[0.62, 0.1, 0.62]} />
-            <meshStandardMaterial color="#2f2f36" roughness={0.8} />
-          </mesh>
-          <mesh position={[0, 0.5, 0]} castShadow>
-            <coneGeometry args={[0.28, 0.9, 16]} />
-            <meshStandardMaterial color="#f0621f" roughness={0.6} />
-          </mesh>
-          <mesh position={[0, 0.52, 0]}>
-            <cylinderGeometry args={[0.19, 0.22, 0.14, 16]} />
-            <meshStandardMaterial color="#f7f2e8" roughness={0.6} />
-          </mesh>
-        </group>
-      );
+  return (
+    <group>
+      <mesh position={[0, 0.05, 0]}>
+        <boxGeometry args={[0.62, 0.1, 0.62]} />
+        <meshStandardMaterial color="#2f2f36" roughness={0.8} />
+      </mesh>
+
+      <mesh position={[0, 0.5, 0]} castShadow>
+        <coneGeometry args={[0.28, 0.9, 16]} />
+        <meshStandardMaterial color="#f0621f" roughness={0.6} />
+      </mesh>
+    </group>
+  );
 
     case "caixa":
-      return (
-        <mesh position={[0, 0.42, 0]} >
-          <boxGeometry args={[0.9, 0.84, 0.9]} />
-          <meshStandardMaterial color="#b3813f" roughness={0.85} />
-        </mesh>
-      );
+  return (
+    <group>
+      {/* corpo principal */}
+      <mesh position={[0, 0.42, 0]} castShadow>
+        <boxGeometry args={[0.9, 0.84, 0.9]} />
+        <meshStandardMaterial color="#b3813f" roughness={0.85} />
+      </mesh>
+
+      {/* ripa vertical frontal */}
+      <mesh position={[0, 0.42, 0.456]} castShadow>
+        <boxGeometry args={[0.10, 0.76, 0.025]} />
+        <meshStandardMaterial color="#8f642f" roughness={0.9} />
+      </mesh>
+
+      {/* ripa horizontal frontal */}
+      <mesh position={[0, 0.42, 0.462]} castShadow>
+        <boxGeometry args={[0.76, 0.10, 0.025]} />
+        <meshStandardMaterial color="#8f642f" roughness={0.9} />
+      </mesh>
+    </group>
+  );
 
     case "caixa-alta":
       return (
