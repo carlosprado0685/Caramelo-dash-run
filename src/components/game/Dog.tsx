@@ -128,7 +128,7 @@ export function Dog() {
       <group ref={body} position={[0, 0.55, 0]}>
         {/* tronco */}
         <mesh castShadow rotation-x={Math.PI / 2}>
-          <capsuleGeometry args={[0.34, 0.52, 6, 16]} />
+          <capsuleGeometry args={[0.36, 0.54, 6, 16]} />
           <meshStandardMaterial
   color={FUR}
   roughness={0.72}
@@ -138,7 +138,7 @@ export function Dog() {
         </mesh>
         {/* barriga clara */}
         <mesh position={[0, -0.18, 0.02]} rotation-x={Math.PI / 2} scale={[0.9, 1, 0.7]}>
-          <capsuleGeometry args={[0.28, 0.44, 6, 12]} />
+          <capsuleGeometry args={[0.29, 0.46, 6, 12]} />
           <meshStandardMaterial color={CREAM} roughness={0.85} />
         </mesh>
 
@@ -165,7 +165,7 @@ export function Dog() {
                 <meshStandardMaterial color="#ffffff" roughness={0.3} />
               </mesh>
               <mesh position={[0, 0, -0.055]}>
-                <sphereGeometry args={[0.05, 16, 12]} />
+                <sphereGeometry args={[0.055, 16, 12]} />
                 <meshStandardMaterial color={NOSE} roughness={0.2} />
               </mesh>
               <mesh position={[0.02, 0.025, -0.085]}>
@@ -182,7 +182,7 @@ export function Dog() {
               rotation={[0.2, 0, s * 0.5]}
               castShadow
             >
-              <capsuleGeometry args={[0.09, 0.28, 4, 10]} />
+              <capsuleGeometry args={[0.11, 0.30, 4, 10]} />
               <meshStandardMaterial color={FUR} roughness={0.8} />
             </mesh>
           ))}
@@ -191,7 +191,7 @@ export function Dog() {
         {/* cauda */}
         <group ref={tail} position={[0, 0.14, 0.42]}>
           <mesh position={[0, 0.16, 0.1]} rotation-x={-0.7} castShadow>
-            <capsuleGeometry args={[0.07, 0.3, 4, 10]} />
+            <capsuleGeometry args={[0.09, 0.34, 4, 10]} />
             <meshStandardMaterial color={FUR_LIGHT} roughness={0.8} />
           </mesh>
         </group>
@@ -211,7 +211,7 @@ export function Dog() {
             position={[x, -0.24, z]}
           >
             <mesh position={[0, -0.14, 0]} castShadow>
-              <capsuleGeometry args={[0.075, 0.2, 4, 10]} />
+              <capsuleGeometry args={[0.085, 0.21, 4, 10]} />
               <meshStandardMaterial color={FUR} roughness={0.8} />
             </mesh>
             <mesh position={[0, -0.28, -0.03]}>
