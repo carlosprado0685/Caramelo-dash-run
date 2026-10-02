@@ -221,11 +221,11 @@ export function GameCanvas() {
       <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 4.3, 9], fov: 58 }}>
         <color attach="background" args={["#8fd3f0"]} />
         <fog attach="fog" args={["#a9dff5", 45, 105]} />
-        <ambientLight intensity={0.75} />
-        <hemisphereLight args={["#cbeafd", "#8b7554", 0.6]} />
+        <ambientLight intensity={0.65} />
+        <hemisphereLight args={["#cbeafd", "#8b7554", 0.7]} />
         <directionalLight
           position={[6, 12, 6]}
-          intensity={1.7}
+          intensity={1.9}
           castShadow
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
