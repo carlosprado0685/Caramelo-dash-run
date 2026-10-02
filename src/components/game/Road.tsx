@@ -30,17 +30,21 @@ function Placa({ texto, cor = "#2f6f9e" }: { texto: string; cor?: string }) {
     const canvas = document.createElement("canvas");
     canvas.width = 256;
     canvas.height = 128;
+
     const ctx = canvas.getContext("2d")!;
     ctx.fillStyle = cor;
     ctx.fillRect(0, 0, 256, 128);
+
     ctx.fillStyle = "#ffffff";
     ctx.lineWidth = 6;
     ctx.strokeStyle = "#ffffff";
     ctx.strokeRect(10, 10, 236, 108);
+
     ctx.font = "bold 40px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(texto, 128, 68);
+
     const t = new THREE.CanvasTexture(canvas);
     t.colorSpace = THREE.SRGBColorSpace;
     return t;
@@ -52,9 +56,14 @@ function Placa({ texto, cor = "#2f6f9e" }: { texto: string; cor?: string }) {
         <cylinderGeometry args={[0.05, 0.05, 2, 6]} />
         <meshStandardMaterial color="#8d8f99" roughness={0.6} />
       </mesh>
+
       <mesh position={[0, 2.05, 0.04]}>
-        <planeGeometry args={[1.1, 0.55]} />
-        <meshStandardMaterial map={tex} roughness={0.7} />
+        <planeGeometry args={[1.35, 0.68]} />
+        <meshStandardMaterial
+          map={tex}
+          roughness={0.7}
+          side={THREE.DoubleSide}
+        />
       </mesh>
     </group>
   );
@@ -604,7 +613,7 @@ function CanteiroBaixo() {
       </mesh>
 
       <mesh position={[-0.55, 0.28, 0]} castShadow>
-        <sphereGeometry args={[0.18, 8, 6]} />
+        <dodecahedronGeometry args={[0.2, 1]} />
         <meshStandardMaterial
           color="#6f9652"
           roughness={0.95}
@@ -612,7 +621,7 @@ function CanteiroBaixo() {
       </mesh>
 
       <mesh position={[0, 0.32, 0.05]} castShadow>
-        <sphereGeometry args={[0.22, 8, 6]} />
+        <dodecahedronGeometry args={[0.24, 1]} />
         <meshStandardMaterial
           color="#5d8d43"
           roughness={0.95}
@@ -620,7 +629,7 @@ function CanteiroBaixo() {
       </mesh>
 
       <mesh position={[0.55, 0.27, -0.02]} castShadow>
-        <sphereGeometry args={[0.17, 8, 6]} />
+        <dodecahedronGeometry args={[0.19, 1]} />
         <meshStandardMaterial
           color="#4f7f3b"
           roughness={0.95}
@@ -629,7 +638,6 @@ function CanteiroBaixo() {
     </group>
   );
 }
-
 function ArvoreAlta() {
   return (
     <group>
@@ -644,7 +652,7 @@ function ArvoreAlta() {
 
       {/* copa inferior */}
       <mesh position={[0, 3.0, 0]} castShadow>
-        <sphereGeometry args={[1.15, 10, 8]} />
+        <dodecahedronGeometry args={[1.15, 1]} />
         <meshStandardMaterial
           color="#4f7f3b"
           roughness={0.95}
@@ -792,7 +800,7 @@ export function Road() {
           return (
             <group key={i} position={[side * 4.6, 0.28, -i * 6 + 6]}>
               <mesh position={[0, 1.4, 0]}>
-                <cylinderGeometry args={[0.09, 0.11, 2.8, 8]} />
+                <cylinderGeometry args={[0.10, 0.13, 2.8, 10]} />
                 <meshStandardMaterial color="#6a6d78" roughness={0.6} />
               </mesh>
               <mesh position={[side * -0.35, 2.75, 0]}>
@@ -925,21 +933,17 @@ export function Road() {
         </group>
       )}
 
-      <group position={[lado * 5.6, 0.28, 0]}>
+      <group position={[lado * 5.7, 0.28, 0]}>
         {i % 2 === 0 ? <BancaDeJornal /> : <Arvore />}
       </group>
-
-<group position={[-6.2, 0.28, -23]}>
+ 
+<group position={[-6.2, 0.28, -28]}>
   <ArvoreAlta />
 </group>
 
-<group position={[6.2, 0.28, -35]}>
-  <ArvoreAlta />
-</group>
-
-      <group position={[-lado * 5.9, 0.28, -6]}>
+      <group position={[-lado * 5.9, 0.28, -12]}>
         {i % 2 === 0 ? <Arvore /> : <BancaDeJornal />}
-      </group>
+   </group>
 
       <group position={[-lado * 4.5, 0.28, -9]}>
         <Placa
