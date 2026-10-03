@@ -1094,7 +1094,7 @@ visible={false}
       </group>
 
             <group
-        position={[lado * 9.4, 0.28, -16]}
+        position={[lado * 11.9, 0.28, -17.5]}
         rotation-y={lado === 1 ? -Math.PI / 2 : Math.PI / 2}
       >
         <Padaria />
