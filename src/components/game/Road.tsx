@@ -734,15 +734,27 @@ export function Road() {
   const props = useRef<THREE.Group>(null);
   const cenario = useRef<THREE.Group>(null);
 
-  useFrame((_, rawDelta) => {
+   useFrame((_, rawDelta) => {
     const dt = Math.min(rawDelta, 0.05);
     const move = runtime.alive ? runtime.speed * dt : 0;
+
     if (asphalt) asphalt.offset.y -= move * 0.055;
-    for (const g of [stripes.current, props.current, cenario.current]) {
+
+    for (const g of [stripes.current, props.current]) {
       if (!g) continue;
       g.children.forEach((c) => {
         c.position.z += move;
         if (c.position.z > 12) c.position.z -= 96;
+      });
+    }
+
+    if (cenario.current) {
+      cenario.current.children.forEach((c) => {
+        c.position.z += move;
+
+        if (c.position.z > 35) {
+          c.position.z -= 96;
+        }
       });
     }
   });
@@ -924,6 +936,27 @@ export function Road() {
   <Casa3D2 />
 </group>
 
+<group
+  position={[10.5, 0.28, -52]}
+  rotation-y={-Math.PI / 2}
+>
+  <Casa3D />
+</group>
+
+<group
+  position={[-8, 0.28, -60]}
+  rotation-y={Math.PI / 2}
+>
+  <Comercio3D />
+</group>
+
+<group
+  position={[9.2, 0.28, -102]}
+  rotation-y={-Math.PI / 2}
+>
+  <Casa3D2 />
+</group>
+
 <group position={[-8.7, 0.2, -82]}>
   <ArbustoBaixo />
 </group>
@@ -937,34 +970,34 @@ export function Road() {
 </group>
 
 <group
-  position={[11.5, 0.28, -75]}
+  position={[12.5, 0.28, -75]}
   rotation-y={-Math.PI / 2}
 >
   <Comercio3D />
 </group>
 
-  <group position={[8.8, 0.28, -30]} rotation-y={-Math.PI / 2}>
+  <group position={[11.4, 0.28, -38]} rotation-y={-Math.PI / 2}>
     <PredioFundo
       cor="#c8b49d"
       altura={6}
     />
   </group>
 
-  <group position={[-8.8, 0.28, -38]} rotation-y={Math.PI / 2}>
+  <group position={[-11.4, 0.28, -38]} rotation-y={Math.PI / 2}>
     <PredioFundo
       cor="#b9c7b5"
       altura={5.5}
     />
   </group>
 
-<group position={[8.8, 0.28, -54]} rotation-y={-Math.PI / 2}>
+<group position={[11.4, 0.28, -54]} rotation-y={-Math.PI / 2}>
    <PredioEstreito
     cor="#d0b89c"
     altura={5.2}
   />
 </group>
 
-<group position={[-8.8, 0.28, -66]} rotation-y={Math.PI / 2}>
+<group position={[-11.4, 0.28, -66]} rotation-y={Math.PI / 2}>
    <PredioEstreito
     cor="#b8c4d0"
     altura={6.5}
@@ -977,7 +1010,7 @@ export function Road() {
     position={[s * 20, -0.02, -30]}
     receiveShadow
   >
-    <boxGeometry args={[19.8, 0.08, 200]} />
+    <boxGeometry args={[19.8, 0.08, 320]} />
     <meshStandardMaterial
       color="#7f9b5d"
       roughness={1}
@@ -1041,16 +1074,16 @@ visible={false}
         </group>
       )}
 
-      <group position={[lado * 5.7, 0.28, 0]}>
-        {i % 2 === 0 ? <BancaDeJornal /> : <Arvore />}
-      </group>
+      <group position={[lado * 6.1, 0.28, 0]}>
+  {i === 0 ? <BancaDeJornal /> : <Arvore />}
+</group>
  
 <group position={[-6.2, 0.28, -28]}>
   <ArvoreAlta />
 </group>
 
       <group position={[-lado * 5.9, 0.28, -12]}>
-        {i % 2 === 0 ? <Arvore /> : <BancaDeJornal />}
+        <Arvore />
    </group>
 
       <group position={[-lado * 4.5, 0.28, -9]}>
@@ -1060,14 +1093,12 @@ visible={false}
         />
       </group>
 
-      {i % 2 === 1 && (
-  <group
-    position={[lado * 9.4, 0.28, -16]}
-    rotation-y={lado === 1 ? -Math.PI / 2 : Math.PI / 2}
-  >
-    <Padaria />
-  </group>
-)}
+            <group
+        position={[lado * 9.4, 0.28, -16]}
+        rotation-y={lado === 1 ? -Math.PI / 2 : Math.PI / 2}
+      >
+        <Padaria />
+      </group>
     </group>
   );
 })}
